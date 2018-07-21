@@ -5,10 +5,10 @@
         id="com.phonegap.helloworld"
         version="1.0.0">
 
-    <name>Bus Tracker</name>
+    <name>Bus Driver</name>
 
     <description>
-        Sistema de seguimiento de camiones.
+        Sistema de coordenadas de rutas.
     </description>
 
     <author href="http://innopartserver.com" email="antonio-cam2@hotmail.com">
