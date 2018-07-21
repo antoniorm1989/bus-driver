@@ -204,40 +204,38 @@
 
         function sendDataCoordinates() {
 
-            if (position && isInRouting) {
+            if (isInRouting) {
 
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
+                navigator.geolocation.getCurrentPosition(function (pos) {
+                    position = '{"idBus": ' + data.bus.idBus + ', "lat": ' + pos.coords.latitude + ', "lng": ' + pos.coords.longitude + '}';
+                    document.getElementById('lblMessage').textContent = "Lat : " + pos.coords.latitude + " Lng : " + pos.coords.longitude;
 
-                    console.log(this.responseText);
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function () {
 
-                    if (this.readyState == 4 && this.status == 200) {
-                        //this.responseText;
-                    } else {
-                        // contemplar archivo de errores.
+                        console.log(this.responseText);
+
+                        if (this.readyState == 4 && this.status == 200) {
+                            //this.responseText;
+                        } else {
+                            // contemplar archivo de errores.
+                        }
+                    };
+
+                    xhttp.open("POST", "http://innopartserv.com/bus_tracker/server.php?api=updatePosition", true);
+                    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xhttp.send(position);
+
+                    if (isInRouting) {
+                        setTimeout("sendDataCoordinates()", 10000);
                     }
-                };
-                xhttp.open("POST", "http://innopartserv.com/bus_tracker/server.php?api=updatePosition", true);
-                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhttp.send(position);
 
-                if (isInRouting) {
-                    setTimeout("sendDataCoordinates()", 10000);
-                }
+                }, function (error) {
+                    document.getElementById('lblMessage').textContent = 'code: ' + error.code + '\n' + 'message: ' + error.message;
+                });
+
             }
         }
-
-        //document.addEventListener("deviceready", function () {
-
-            navigator.geolocation.getCurrentPosition(function (pos) {
-                position = '{"idBus": ' + data.bus.idBus + ', "lat": ' + pos.coords.latitude + ', "lng": ' + pos.coords.longitude + '}';
-                document.getElementById('lblMessage').value = "Lat : " + pos.coords.latitude + " Lng : " + pos.coords.longitude;
-                alert(position);
-            }, function (error) {
-                document.getElementById('lblMessage').value = 'code: ' + error.code + '\n' + 'message: ' + error.message;
-            });
-
-      //  }, false);
 
     </script>
 
@@ -247,7 +245,6 @@
         crossorigin="anonymous"></script>
     <script>
         window.jQuery || document.write('<script src="libs/bootstrap4/assets/js/vendor/jquery-slim.min.js"><\/script>')
-
     </script>
 
     <script src="libs/bootstrap4/assets/js/vendor/popper.min.js"></script>
