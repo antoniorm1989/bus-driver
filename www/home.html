@@ -163,7 +163,9 @@
 
     <p/>
 
-    <label style="margin-top:100px;" id="lblMessage">Sin respuesta..</label>
+    <b>
+        <label style="margin-top:100px; transition: opacity 1s; webkit-transition: width 1s;" id="lblMessage">Sin respuesta..</label>
+    </b>
 
     <footer class="footer">
         © 2018 Copyright: <a href="#"> kense.com.mx </a>
@@ -208,7 +210,14 @@
 
                 navigator.geolocation.getCurrentPosition(function (pos) {
                     position = '{"idBus": ' + data.bus.idBus + ', "lat": ' + pos.coords.latitude + ', "lng": ' + pos.coords.longitude + '}';
-                    document.getElementById('lblMessage').textContent = "Lat : " + pos.coords.latitude + " Lng : " + pos.coords.longitude;
+
+                    document.getElementById('lblMessage').textContent = "Lat : " + pos.coords.latitude + " Lng : " + pos.coords.longitude + " ...";
+                    document.getElementById('lblMessage').style.opacity = .3;
+
+                    setTimeout(function () {
+                        document.getElementById('lblMessage').style.opacity = 1;
+                    }, 1000);
+
 
                     var xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function () {
@@ -236,7 +245,6 @@
 
             }
         }
-
     </script>
 
 
